@@ -1,2 +1,5 @@
-# sonologic-presupuesto-demo
-Demo PWA Presupuestos Sonologic (tarifas de ejemplo)
+# Sonologic Presupuesto Demo
+
+PWA demo de presupuestos Sonologic.
+
+Public URL (GitHub Pages): https://robertolazarom.github.io/sonologic-presupuesto-demo/
