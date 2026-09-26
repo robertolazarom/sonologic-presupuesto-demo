@@ -10,7 +10,44 @@
 <link rel="apple-touch-icon" href="icon.svg"/>
 <link rel="icon" type="image/svg+xml" href="icon.svg"/>
 <title>Demo · Presupuestos Sonologic</title>
-<link rel="stylesheet" href="app.css"/>
+<style>
+:root{--o:#FC900E;--oh:#E07A00;--g:#3A3A3A;--bg:#f6f6f7;--c:#fff;--b:#e5e5e8;--m:#6b6b70;--d:#c9302c;--r:12px;--sb:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html,body{margin:0;padding:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--g);min-height:100%;-webkit-tap-highlight-color:transparent}
+body{padding-bottom:calc(72px + var(--sb))}
+.hdr{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--c);border-bottom:1px solid var(--b)}
+.hdr img{height:36px;width:auto;border-radius:6px}.hdr h1{margin:0;font-size:1.05rem;font-weight:700;line-height:1.25}
+.hdr .sub{display:block;font-size:.75rem;font-weight:500;color:var(--m)}
+.badge{margin-left:auto;font-size:.7rem;font-weight:700;background:var(--o);color:#fff;padding:4px 8px;border-radius:999px}
+main{max-width:920px;margin:0 auto;padding:16px}.panel{display:none}.panel.on{display:block}
+.card{background:var(--c);border:1px solid var(--b);border-radius:var(--r);padding:14px 16px;margin-bottom:12px}
+.card h2{margin:0 0 12px;font-size:1rem}.hint{font-size:.85rem;color:var(--m);margin:8px 0 0}
+label{display:block;font-size:.8rem;font-weight:600;margin:10px 0 4px}label:first-child{margin-top:0}
+input[type=text],input[type=number]{width:100%;padding:12px 14px;font-size:1rem;border:1.5px solid var(--b);border-radius:10px;outline:none;background:#fff;color:var(--g)}
+input:focus{border-color:var(--o)}
+.row{display:grid;grid-template-columns:1.4fr .7fr .7fr auto;gap:8px;align-items:end}
+@media(max-width:640px){.row{grid-template-columns:1fr 1fr}.row .full{grid-column:1/-1}}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 16px;font-size:.95rem;font-weight:600;border:none;border-radius:10px;cursor:pointer;background:var(--o);color:#fff}
+.btn:hover{background:var(--oh)}.btn-g{background:#ececef;color:var(--g)}.btn-d{background:#f0f0f2;color:var(--g);min-height:40px;padding:8px 12px;font-size:.85rem}
+.btn-d:hover{background:var(--d);color:#fff}.btn-s{min-height:36px;padding:6px 10px;font-size:.8rem}
+.alist{display:flex;flex-direction:column;gap:8px}
+.arow{display:grid;grid-template-columns:1fr auto;gap:8px;padding:12px;border:1px solid var(--b);border-radius:10px;background:#fafafa}
+.an{font-weight:700;margin-bottom:4px}.am{font-size:.85rem;color:var(--m)}.aa{font-size:.8rem;margin-top:6px}
+.act{display:flex;flex-direction:column;gap:6px}
+.mt{display:inline-flex;border:1.5px solid var(--b);border-radius:8px;overflow:hidden}
+.mt button{flex:1;min-height:36px;padding:6px 10px;border:none;background:#fff;color:var(--m);font-size:.75rem;font-weight:600;cursor:pointer}
+.mt button.on{background:var(--o);color:#fff}
+.pre{margin:0;white-space:pre-wrap;font-family:ui-monospace,Consolas,monospace;font-size:.9rem;line-height:1.45}
+.tot{margin-top:12px;padding:14px 16px;background:var(--g);color:#fff;border-radius:var(--r);font-size:1.15rem;font-weight:700;display:flex;justify-content:space-between}
+.tot .amt{color:var(--o)}
+.rg{display:grid;grid-template-columns:1fr auto;gap:8px 16px;font-size:.95rem}.rg dt{color:var(--m)}.rg dd{margin:0;font-weight:700;text-align:right}
+.clog{height:min(420px,50vh);overflow-y:auto;padding:12px;background:#fafafa;border:1px solid var(--b);border-radius:10px;margin-bottom:10px}
+.cmsg{margin-bottom:12px;font-size:.95rem;line-height:1.4}.cmsg .w{font-weight:700;color:var(--o)}.cmsg.u .w{color:var(--g)}
+.cin{display:flex;gap:8px}.cin input{flex:1}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:repeat(5,1fr);background:var(--c);border-top:1px solid var(--b);padding:6px 4px calc(6px + var(--sb));box-shadow:0 -2px 12px rgba(0,0,0,.06)}
+.tabs button{appearance:none;border:none;background:transparent;color:var(--m);font-size:.68rem;font-weight:600;padding:6px 2px;min-height:52px;border-radius:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.tabs button .i{font-size:1.15rem;line-height:1}.tabs button.on{color:var(--o);background:rgba(252,144,14,.12)}
+.empty{text-align:center;color:var(--m);padding:24px 12px;font-size:.9rem}
+</style>
 </head>
 <body>
 <header class="hdr">
@@ -65,6 +102,32 @@
 <button type="button" data-t="tarifas"><span class="i">📑</span>Tarifas</button>
 <button type="button" data-t="asistente"><span class="i">💬</span>Asistente</button>
 </nav>
-<script src="app.js"></script>
+<script>
+(function(){
+"use strict";
+var K="sonologic_presupuesto_demo_v1";
+var T=12,D=380,TK=18,CV=45,F=1.35;
+var S={titulo:"Película de ejemplo",cliente:"Cliente demo",minutos:95,jornadas:4,actores:[],chatSeeded:false};
+function euro(n){return (Number(n)||0).toLocaleString("es-ES",{minimumFractionDigits:2,maximumFractionDigits:2})+" €";}
+function impC(t,c){return t*TK+c*CV;}
+function impK(t){return t*TK*F;}
+function pn(v,d){if(v==null||v==="")return d;var n=parseFloat(String(v).replace(",","."));return isNaN(n)?d:n;}
+function seed(){return[{nombre:"Actor 1",takes:40,conv:2,modo:"convenio"},{nombre:"Actor 2",takes:30,conv:1,modo:"convenio"},{nombre:"Actor 3",takes:25,conv:2,modo:"convenio"}];}
+function load(){try{var r=localStorage.getItem(K);if(!r){S.actores=seed();save();return;}var d=JSON.parse(r);if(d.titulo!=null)S.titulo=String(d.titulo);if(d.cliente!=null)S.cliente=String(d.cliente);S.minutos=pn(d.minutos,95);S.jornadas=pn(d.jornadas,4);S.chatSeeded=!!d.chatSeeded;if(Array.isArray(d.actores)&&d.actores.length){S.actores=d.actores.map(function(a){return{nombre:String(a.nombre||"Actor"),takes:parseInt(a.takes,10)||0,conv:parseInt(a.conv,10)||0,modo:a.modo==="contrato"?"contrato":"convenio"};});}else S.actores=seed();}catch(e){S.actores=seed();}}
+function save(){try{localStorage.setItem(K,JSON.stringify({titulo:S.titulo,cliente:S.cliente,minutos:S.minutos,jornadas:S.jornadas,actores:S.actores,chatSeeded:S.chatSeeded}));}catch(e){}}
+function tab(n){document.querySelectorAll(".panel").forEach(function(p){p.classList.toggle("on",p.id==="p-"+n);});document.querySelectorAll(".tabs button").forEach(function(b){var on=b.getAttribute("data-t")===n;b.classList.toggle("on",on);});if(n==="presupuesto")rp();if(n==="actores")ra();}
+function bd(){var a=document.getElementById("titulo"),b=document.getElementById("cliente"),c=document.getElementById("minutos"),d=document.getElementById("jornadas");a.value=S.titulo;b.value=S.cliente;c.value=S.minutos;d.value=S.jornadas;function sync(){S.titulo=a.value;S.cliente=b.value;S.minutos=pn(c.value,0);S.jornadas=pn(d.value,0);save();rp();}["input","change"].forEach(function(ev){a.addEventListener(ev,sync);b.addEventListener(ev,sync);c.addEventListener(ev,sync);d.addEventListener(ev,sync);});}
+function ra(){var box=document.getElementById("la");if(!S.actores.length){box.innerHTML='<div class="empty">No hay actores. Añade uno arriba.</div>';return;}box.innerHTML="";S.actores.forEach(function(a,i){var ci=impC(a.takes,a.conv),co=impK(a.takes);var row=document.createElement("div");row.className="arow";row.innerHTML='<div><div class="an"></div><div class="am"></div><div class="aa"></div></div><div class="act"><div class="mt"><button type="button" data-m="convenio">convenio</button><button type="button" data-m="contrato">contrato</button></div><button type="button" class="btn btn-d btn-s be">Eliminar</button></div>';row.querySelector(".an").textContent=a.nombre;row.querySelector(".am").textContent=a.takes+" takes · "+a.conv+" convocatorias";row.querySelector(".aa").textContent="Convenio "+euro(ci)+" / Contrato "+euro(co);row.querySelectorAll(".mt button").forEach(function(btn){if(btn.getAttribute("data-m")===a.modo)btn.classList.add("on");btn.addEventListener("click",function(){S.actores[i].modo=btn.getAttribute("data-m");save();ra();rp();});});row.querySelector(".be").addEventListener("click",function(){if(!confirm("¿Eliminar a «"+a.nombre+"» de la lista?"))return;S.actores.splice(i,1);save();ra();rp();});box.appendChild(row);});}
+function calc(){var m=pn(S.minutos,0),j=pn(S.jornadas,0),tr=m*T,di=j*D,lines=[],ta=0;S.actores.forEach(function(a){var ci=impC(a.takes,a.conv),co=impK(a.takes),el=a.modo==="convenio"?ci:co;ta+=el;lines.push("  - "+a.nombre+": "+a.modo+" → "+euro(el)+" (convenio "+euro(ci)+" / contrato "+euro(co)+")");});return{m:m,j:j,tr:tr,di:di,lines:lines,ta:ta,total:tr+di+ta};}
+function rp(){var c=calc();var t=["PRESUPUESTO DE DEMOSTRACIÓN (tarifas de ejemplo)","Proyecto: "+S.titulo+"  |  Cliente: "+S.cliente,"","Partidas (motor de cálculo — no estimadas por IA):","  Traducción y ajuste: "+c.m+" min × "+T.toFixed(2)+" € = "+euro(c.tr),"  Dirección:           "+c.j+" jornadas × "+D.toFixed(2)+" € = "+euro(c.di),"  Actores:"].concat(c.lines.length?c.lines:["  (ninguno)"]).concat(["                     Subtotal actores = "+euro(c.ta),"","TOTAL = "+euro(c.total),"","Nota: en la propuesta real, estas tarifas vendrían de vuestros Excel."]);document.getElementById("pt").textContent=t.join("\n");document.getElementById("ptot").textContent=euro(c.total);}
+function rt(){var dl=document.getElementById("tl");var items=[["Traducción / minuto",euro(T)],["Dirección / jornada",euro(D)],["Take (convenio)",euro(TK)],["Convocatoria",euro(CV)],["Factor contrato",String(F)],["Fórmula convenio","takes × take + conv × convocatoria"],["Fórmula contrato","takes × take × factor"]];dl.innerHTML=items.map(function(p){return "<dt>"+p[0]+"</dt><dd>"+p[1]+"</dd>";}).join("");}
+function clog(q,msg,u){var log=document.getElementById("cl");var div=document.createElement("div");div.className="cmsg"+(u?" u":"");var w=document.createElement("span");w.className="w";w.textContent=q+": ";div.appendChild(w);div.appendChild(document.createTextNode(msg));log.appendChild(div);log.scrollTop=log.scrollHeight;}
+function hc(){var input=document.getElementById("ci");var msg=input.value.trim();if(!msg)return;clog("Tú",msg,true);input.value="";var low=msg.toLowerCase();var mins=low.match(/(\d+)\s*min/);var jor=low.match(/(\d+)\s*jorn/);var takes=low.match(/(\d+)\s*take/);var conv=low.match(/(\d+)\s*convoc/);var ch=[];if(mins){S.minutos=parseInt(mins[1],10);document.getElementById("minutos").value=S.minutos;ch.push("minutos = "+mins[1]);}if(jor){S.jornadas=parseInt(jor[1],10);document.getElementById("jornadas").value=S.jornadas;ch.push("jornadas = "+jor[1]);}if(takes){var t=parseInt(takes[1],10);var c=conv?parseInt(conv[1],10):1;S.actores.push({nombre:"Actor chat "+(S.actores.length+1),takes:t,conv:c,modo:"convenio"});ch.push("actor con "+t+" takes y "+c+" convocatorias");}save();ra();rp();if(ch.length)clog("Asistente","He rellenado: "+ch.join(", ")+". Mira la pestaña Presupuesto: las cifras las calcula el motor, no yo.",false);else clog("Asistente","No he detectado minutos/jornadas/takes. Ejemplo: «95 minutos, 4 jornadas, 40 takes y 2 convocatorias».",false);}
+function add(){var ne=document.getElementById("nn"),te=document.getElementById("nt"),ce=document.getElementById("nc");var n=ne.value.trim()||("Actor "+(S.actores.length+1));var t=parseInt(te.value,10),c=parseInt(ce.value,10);if(isNaN(t)||isNaN(c)){alert("Takes y convocatorias deben ser números enteros.");return;}S.actores.push({nombre:n,takes:t,conv:c,modo:"convenio"});ne.value="";te.value="30";ce.value="1";save();ra();rp();}
+function init(){load();bd();ra();rp();rt();document.querySelectorAll(".tabs button").forEach(function(btn){btn.addEventListener("click",function(){tab(btn.getAttribute("data-t"));});});document.getElementById("ba").addEventListener("click",add);document.getElementById("bc").addEventListener("click",hc);document.getElementById("ci").addEventListener("keydown",function(e){if(e.key==="Enter")hc();});document.getElementById("bav").addEventListener("click",function(){alert("Esta app usa tarifas inventadas solo para la prueba.\nEn la propuesta real, el motor leería vuestros Excel de Sonologic.");});if(!S.chatSeeded){clog("Asistente","Hola. Prueba: «Presupuesta 95 minutos, 4 jornadas y un actor con 40 takes y 2 convocatorias».",false);S.chatSeeded=true;save();}else clog("Asistente","Hola de nuevo. Puedes decirme minutos, jornadas, takes y convocatorias.",false);}
+if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});}
+init();
+})();
+</script>
 </body>
 </html>
