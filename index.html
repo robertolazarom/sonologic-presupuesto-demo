@@ -1,1 +1,70 @@
-placeholder
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#FC900E"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="Sonologic"/>
+<link rel="manifest" href="manifest.json"/>
+<link rel="apple-touch-icon" href="icon.svg"/>
+<link rel="icon" type="image/svg+xml" href="icon.svg"/>
+<title>Demo · Presupuestos Sonologic</title>
+<link rel="stylesheet" href="app.css"/>
+</head>
+<body>
+<header class="hdr">
+<img src="icon.svg" alt="Sonologic" width="120" height="36"/>
+<h1>Asistente de presupuestos<span class="sub">Demo Sonologic</span></h1>
+<span class="badge">DEMO</span>
+</header>
+<main>
+<section id="p-datos" class="panel on">
+<div class="card"><h2>Proyecto</h2>
+<label for="titulo">Título</label><input id="titulo" type="text" autocomplete="off"/>
+<label for="cliente">Cliente</label><input id="cliente" type="text" autocomplete="off"/>
+<label for="minutos">Minutos de metraje</label><input id="minutos" type="number" min="0" step="1" inputmode="decimal"/>
+<label for="jornadas">Jornadas de dirección</label><input id="jornadas" type="number" min="0" step="1" inputmode="decimal"/>
+<p class="hint">Los cambios se guardan automáticamente y actualizan el presupuesto en vivo.</p>
+</div></section>
+<section id="p-actores" class="panel">
+<div class="card"><h2>Añadir actor</h2>
+<div class="row">
+<div class="full"><label for="nn">Nombre</label><input id="nn" type="text" placeholder="Nombre del actor"/></div>
+<div><label for="nt">Takes</label><input id="nt" type="number" min="0" step="1" value="30"/></div>
+<div><label for="nc">Convocatorias</label><input id="nc" type="number" min="0" step="1" value="1"/></div>
+<div><label>&nbsp;</label><button type="button" class="btn" id="ba">Añadir</button></div>
+</div>
+<p class="hint">Cambia convenio / contrato en cada fila. La decisión es siempre tuya; la app solo muestra ambas cifras.</p>
+</div>
+<div class="card"><h2>Lista de actores</h2><div id="la" class="alist"></div></div>
+</section>
+<section id="p-presupuesto" class="panel">
+<div class="card"><h2>Presupuesto</h2>
+<pre id="pt" class="pre"></pre>
+<div class="tot"><span>TOTAL</span><span class="amt" id="ptot">0,00 €</span></div>
+<p class="hint">Partidas calculadas por el motor (no estimadas por IA). Tarifas de ejemplo.</p>
+<button type="button" class="btn btn-g" id="bav" style="margin-top:10px">Aviso: tarifas de ejemplo</button>
+</div></section>
+<section id="p-tarifas" class="panel">
+<div class="card"><h2>Tarifas de demostración</h2>
+<dl class="rg" id="tl"></dl>
+<p class="hint">Estas cifras son inventadas solo para la prueba. En la propuesta real el motor leería los Excel de Sonologic.</p>
+</div></section>
+<section id="p-asistente" class="panel">
+<div class="card"><h2>Asistente</h2>
+<p class="hint" style="margin-top:0;margin-bottom:10px">Escribe en lenguaje normal. El asistente rellena datos; el motor (no la IA) hace las cuentas.</p>
+<div id="cl" class="clog" aria-live="polite"></div>
+<div class="cin"><input id="ci" type="text" placeholder="Ej.: 95 minutos, 4 jornadas, 40 takes y 2 convocatorias"/><button type="button" class="btn" id="bc">Enviar</button></div>
+</div></section>
+</main>
+<nav class="tabs" role="tablist" aria-label="Secciones">
+<button type="button" class="on" data-t="datos"><span class="i">📋</span>Datos</button>
+<button type="button" data-t="actores"><span class="i">🎭</span>Actores</button>
+<button type="button" data-t="presupuesto"><span class="i">💶</span>Presupuesto</button>
+<button type="button" data-t="tarifas"><span class="i">📑</span>Tarifas</button>
+<button type="button" data-t="asistente"><span class="i">💬</span>Asistente</button>
+</nav>
+<script src="app.js"></script>
+</body>
+</html>
