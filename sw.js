@@ -1,8 +1,10 @@
 /* Service worker — shell cache for Sonologic presupuesto demo PWA */
-const CACHE = "sonologic-presupuesto-demo-v1";
+const CACHE = "sonologic-presupuesto-demo-v2";
 const ASSETS = [
   "./",
   "./index.html",
+  "./app.css",
+  "./app.js",
   "./manifest.json",
   "./sw.js",
   "./icon.svg"
